@@ -1,3 +1,6 @@
+source("R/moving-average.R")
+
+
 
 
 #  Read in the data ------------------------------------------------------
@@ -40,45 +43,45 @@ Combined_Bisley_Data <- bind_rows(list(Bisley01_filtered, Bisley02_filtered, Bis
 Combined_Bisley_Data
 
 
-#  Create averages -------------------------------------------------------
+# #  Create averages -------------------------------------------------------
 
-# Want to make 9 week moving averages for each ion 
-# Need to filter the dates so it is for every 9 weeks 
-# Need an empty column for site in the tibble 
-
-
-Bisley_Averages <- tibble(
-  window_start = seq(
-    ymd("1988-01-05"),
-    ymd("1994-12-27"),
-    by = "9 weeks"
-  ),
-  K = NA,
-  Mg = NA,
-  Ca = NA,
-  `NO3-N` = NA,
-  `NH4-N` = NA
-)
-print(Bisley_Averages)
+# # Want to make 9 week moving averages for each ion 
+# # Need to filter the dates so it is for every 9 weeks 
+# # Need an empty column for site in the tibble 
 
 
-for (i in 1:nrow(Bisley_Averages)) {
-  w1 <- Bisley_Averages$window_start[i] # what is the start of the window? call it w1
-  w2 <- w1 + weeks(9) # create the end of the window, call it w2
+# Bisley_Averages <- tibble(
+#   window_start = seq(
+#     ymd("1988-01-05"),
+#     ymd("1994-12-27"),
+#     by = "9 weeks"
+#   ),
+#   K = NA,
+#   Mg = NA,
+#   Ca = NA,
+#   `NO3-N` = NA,
+#   `NH4-N` = NA
+# )
+# print(Bisley_Averages)
+
+
+# for (i in 1:nrow(Bisley_Averages)) {
+#   w1 <- Bisley_Averages$window_start[i] # what is the start of the window? call it w1
+#   w2 <- w1 + weeks(9) # create the end of the window, call it w2
 
   
-print(w2)
+# print(w2)
 
-  in_window <- filter(Bisley01_filtered, (Sample_Date >= w1 & Sample_Date < w2))
+#   in_window <- filter(Bisley01_filtered, (Sample_Date >= w1 & Sample_Date < w2))
 
-# Find the mean 
+# # Find the mean 
 
-Bisley_Averages$K[i] <- mean(in_window$K, na.rm = TRUE)
-Bisley_Averages$Mg[i] <- mean(in_window$Mg, na.rm = TRUE)
-Bisley_Averages$Ca[i] <- mean(in_window$Ca, na.rm = TRUE)
-Bisley_Averages$`NO3-N`[i] <- mean(in_window$`NO3-N`, na.rm = TRUE)
-Bisley_Averages$`NH4-N`[i] <- mean(in_window$`NH4-N`, na.rm = TRUE)
-}
+# Bisley_Averages$K[i] <- mean(in_window$K, na.rm = TRUE)
+# Bisley_Averages$Mg[i] <- mean(in_window$Mg, na.rm = TRUE)
+# Bisley_Averages$Ca[i] <- mean(in_window$Ca, na.rm = TRUE)
+# Bisley_Averages$`NO3-N`[i] <- mean(in_window$`NO3-N`, na.rm = TRUE)
+# Bisley_Averages$`NH4-N`[i] <- mean(in_window$`NH4-N`, na.rm = TRUE)
+# }
 
 #  pivot longer ----------------------------------------------------------
 
@@ -99,7 +102,6 @@ Bisley_Averages |>
   geom_line() +
   facet_wrap(~Ions, scales = "free") +
   theme_minimal()
-
 
 # Need to expand this and want to use pivot and facet wrap 
 # We want the years on the x axis 
