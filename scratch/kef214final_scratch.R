@@ -101,9 +101,6 @@ Bisley_Averages |>
   theme_minimal()
 
 
-
-
-
 # Need to expand this and want to use pivot and facet wrap 
 # We want the years on the x axis 
 # want to use facet_wrap to get a chart of each ion?
