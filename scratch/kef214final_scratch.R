@@ -1,7 +1,10 @@
-source("R/moving-average.R")
 
 #  Read in the data ------------------------------------------------------
+
 library(tidyverse)
+source("R/moving-average.R")
+
+
 Bisley01 <- read_csv("data/knb-lter-luq.20.4923064/QuebradaCuenca1-Bisley.csv")
 Bisley02 <- read_csv("data/knb-lter-luq.20.4923064/QuebradaCuenca2-Bisley.csv")
 Bisley03 <- read_csv("data/knb-lter-luq.20.4923064/QuebradaCuenca3-Bisley.csv")
@@ -15,41 +18,48 @@ LTER <- read_csv("data/knb-lter-luq.20.4923064/LUQ LTER MDLs.csv")
 
 Bisley01_filtered <- Bisley01 |> 
   select(Sample_Date, K, Mg, Ca, `NO3-N`, `NH4-N`) |> 
-  filter(Sample_Date >= "1988-01-01" & Sample_Date <= "1994-12-31")
+  filter(Sample_Date >= "1988-01-01" & Sample_Date <= "1994-12-31") |> 
+  moving_average() |> 
+  mutate(site = "BQ1")
 Bisley01_filtered
 
 Bisley02_filtered <- Bisley02 |> 
   select(Sample_Date, K, Mg, Ca, `NO3-N`, `NH4-N`) |> 
-  filter(Sample_Date >= "1988-01-01" & Sample_Date <= "1994-12-31")
+  filter(Sample_Date >= "1988-01-01" & Sample_Date <= "1994-12-31") |> 
+  moving_average() |> 
+  mutate(site = "BQ2")
 Bisley02_filtered
 
 Bisley03_filtered <- Bisley03 |> 
   select(Sample_Date, K, Mg, Ca, `NO3-N`, `NH4-N`) |> 
-  filter(Sample_Date >= "1988-01-01" & Sample_Date <= "1994-12-31")
+  filter(Sample_Date >= "1988-01-01" & Sample_Date <= "1994-12-31") |> 
+  moving_average() |> 
+  mutate(site = "BQ3")
 Bisley03_filtered
 
 PuentoRoto_filtered <- PuentoRoto |> 
   select(Sample_Date, K, Mg, Ca, `NO3-N`, `NH4-N`) |> 
-  filter(Sample_Date >= "1988-01-01" & Sample_Date <= "1994-12-31")
+  filter(Sample_Date >= "1988-01-01" & Sample_Date <= "1994-12-31") |> 
+  moving_average() |> 
+  mutate(site = "PR")
 PuentoRoto_filtered
 
-# Now we have three *pretty* datasets <3 
 # Want to combine them all together 
 
 Combined_Bisley_Data <- bind_rows(list(Bisley01_filtered, Bisley02_filtered, Bisley03_filtered, PuentoRoto_filtered))
 Combined_Bisley_Data
 
 
+# cleaned data csv  ------------------------------------------------------
+
 # #  Create averages -------------------------------------------------------
 
-# # Want to make 9 week moving averages for each ion 
-# # Need to filter the dates so it is for every 9 weeks 
-# # Need an empty column for site in the tibble 
+## using the moving-average function 
 
 #  pivot longer ----------------------------------------------------------
 
-Bisley_Averages <- Bisley_Averages |> 
-pivot_longer(cols = c(K, Mg, Ca, `NO3-N`, `NH4-N`), 
+Bisley_Avgs <- Combined_Bisley_Data |> 
+  pivot_longer(cols = c(k_mgl, mg_mgl, ca_mgl, no3n_mgl, nh4n_mgl),
 names_to = "Ions", 
 values_to = "Concentrations"
 )
@@ -57,9 +67,10 @@ values_to = "Concentrations"
 
 # ggplot !  --------------------------------------------------------------
 
+
 # Make line plot with just one file 
 
-Bisley_Averages |> 
+Bisley_Avgs |> 
   ggplot(mapping = aes(x = window_start, y = Concentrations)) +
   geom_line() +
   facet_wrap(~Ions, scales = "free") +
