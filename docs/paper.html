@@ -88,13 +88,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<section id="background" class="level1">
-<h1>Background</h1>
+<section id="eds214-final-project---figure-3-recreation" class="level1">
+<h1>EDS214 Final Project - Figure 3 Recreation</h1>
+<section id="kate-frankland" class="level2">
+<h2 class="anchored" data-anchor-id="kate-frankland">Kate Frankland</h2>
 </section>
-<section id="data" class="level1">
-<h1>Data</h1>
+<section id="background" class="level2">
+<h2 class="anchored" data-anchor-id="background">Background</h2>
 <ul>
-<li>Loading in all of the datasets:</li>
+<li>For the EDS 214 final project, we are going to be recreating figure 3 from the Schaefer et. al (2000) paper (https://doi.org/10.1017/s0266467400001358). This figure displays the change of concentrations for five different ions, being K (Potassium), Mg (Magnesium), Ca (Calcium), nitrate (NO3-N), and ammonium (NH4-N). Analyzing these ions can help understand the impact that hurricanes have on watersheds and nutrient cycling.</li>
+</ul>
+<p><img src="fig3_schaefer.png" class="img-fluid"></p>
+</section>
+<section id="data" class="level2">
+<h2 class="anchored" data-anchor-id="data">Data</h2>
+<ul>
+<li>To recreate this figure, the data for the four sites being analyzed needs to be imported and cleaned. This has been completed in clean_data.R, where the years were filtered to only include rows between 1988 and 1994. Columns with only including “Sample_Date”, “K”, “NO3-N”, “Mg”, “Ca”, and “NH4-N” have also been created. In the cleaned data folder, the moving_average function (“R/moving-average.R”) was also applied to each site, and each site has been respectively renamed to “BQ1”, “BQ2”, “BQ3”, and “PR”.</li>
 </ul>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -110,259 +119,59 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 ✖ dplyr::lag()    masks stats::lag()
 ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a> <span class="co">#source("../R/moving-average.R")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>Bisley01 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"../data/knb-lter-luq.20.4923064/QuebradaCuenca1-Bisley.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>fig3_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"../outputs/fig3_data.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: One or more parsing issues, call `problems()` on your data frame for details,
-e.g.:
-  dat &lt;- vroom(...)
-  problems(dat)</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Rows: 1847 Columns: 39
+<pre><code>Rows: 164 Columns: 7
 ── Column specification ────────────────────────────────────────────────────────
 Delimiter: ","
-chr   (8): Sample_ID, NitrateCode, SulfateCode, NH4Code, PO4Code, DOCCode, T...
-dbl  (21): Code, Sample_Time, Gage_Ht, Temp, pH, Cond, Cl, NO3-N, SO4-S, Na,...
-lgl   (9): TDP, ChlorideCode, SodiumCode, PotassiumCode, MagnesiumCode, Calc...
-date  (1): Sample_Date
+chr  (1): site
+dbl  (5): k_mgl, mg_mgl, ca_mgl, no3n_mgl, nh4n_mgl
+date (1): window_start
 
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>Bisley02 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"../data/knb-lter-luq.20.4923064/QuebradaCuenca2-Bisley.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Rows: 1838 Columns: 39
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ","
-chr   (9): Sample_ID, NitrateCode, SulfateCode, PotassiumCode, NH4Code, PO4C...
-dbl  (21): Code, Sample_Time, Gage_Ht, Temp, pH, Cond, Cl, NO3-N, SO4-S, Na,...
-lgl   (8): TDP, ChlorideCode, SodiumCode, MagnesiumCode, CalciumCode, DICCod...
-date  (1): Sample_Date
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>Bisley03 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"../data/knb-lter-luq.20.4923064/QuebradaCuenca3-Bisley.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Rows: 1835 Columns: 39
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ","
-chr   (9): Sample_ID, NitrateCode, SulfateCode, NH4Code, PO4Code, DOCCode, T...
-dbl  (21): Code, Sample_Time, Gage_Ht, Temp, pH, Cond, Cl, NO3-N, SO4-S, Na,...
-lgl   (8): TDP, ChlorideCode, SodiumCode, PotassiumCode, MagnesiumCode, Calc...
-date  (1): Sample_Date
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>PuentoRoto <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"../data/knb-lter-luq.20.4923064/RioMameyesPuenteRoto.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Rows: 1657 Columns: 39
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ","
-chr   (8): Sample_ID, NitrateCode, SulfateCode, NH4Code, PO4Code, TDNCode, S...
-dbl  (21): Code, Sample_Time, Gage_Ht, Temp, pH, Cond, Cl, NO3-N, SO4-S, Na,...
-lgl   (9): TDP, ChlorideCode, SodiumCode, PotassiumCode, MagnesiumCode, Calc...
-date  (1): Sample_Date
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>LTER <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"../data/knb-lter-luq.20.4923064/LUQ LTER MDLs.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Rows: 14 Columns: 3
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ","
-chr (2): Analyte, Units
-dbl (1): MDL
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-</div>
-</div>
-<ul>
-<li>Filtering the Sample_Date so only rows between 1988 and 1994 are included. A new data frame with only “Sample_Date”, “K”, “NO3-N”, “Mg”, “Ca”, and “NH4-N” is going to be created.</li>
-</ul>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>Bisley01_filtered <span class="ot">&lt;-</span> Bisley01 <span class="sc">|&gt;</span> </span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Sample_Date, K, Mg, Ca, <span class="st">`</span><span class="at">NO3-N</span><span class="st">`</span>, <span class="st">`</span><span class="at">NH4-N</span><span class="st">`</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Sample_Date <span class="sc">&gt;=</span> <span class="st">"1988-01-01"</span> <span class="sc">&amp;</span> Sample_Date <span class="sc">&lt;=</span> <span class="st">"1994-12-31"</span>)</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>Bisley01_filtered</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 416 × 6
-   Sample_Date     K    Mg    Ca `NO3-N` `NH4-N`
-   &lt;date&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
- 1 1988-01-05   0.76  2.66  4.06     132      19
- 2 1988-01-12   0.77  2.61  4.08     134      18
- 3 1988-01-19   0.75  2.67  4.16     125      21
- 4 1988-01-26   0.74  2.85  4.41     123      14
- 5 1988-01-29   0.86  1.48  2.4       77      21
- 6 1988-01-29   0.83  1.35  2.06      81      31
- 7 1988-01-29   0.91  1.64  2.65     281      27
- 8 1988-01-29   0.84  1.41  2.63     267      24
- 9 1988-01-29   0.86  1.59  2.67     242      21
-10 1988-02-02   0.76  1.71  2.78     138      80
-# ℹ 406 more rows</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>Bisley02_filtered <span class="ot">&lt;-</span> Bisley02 <span class="sc">|&gt;</span> </span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Sample_Date, K, Mg, Ca, <span class="st">`</span><span class="at">NO3-N</span><span class="st">`</span>, <span class="st">`</span><span class="at">NH4-N</span><span class="st">`</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Sample_Date <span class="sc">&gt;=</span> <span class="st">"1988-01-01"</span> <span class="sc">&amp;</span> Sample_Date <span class="sc">&lt;=</span> <span class="st">"1994-12-31"</span>)</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>Bisley02_filtered</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 412 × 6
-   Sample_Date     K    Mg    Ca `NO3-N` `NH4-N`
-   &lt;date&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
- 1 1988-01-05   0.77  2.57  5.01     255      18
- 2 1988-01-12   0.77  2.54  5.27     233      11
- 3 1988-01-19   0.74  2.61  5.28     221      18
- 4 1988-01-26   0.71  2.74  5.52     195      17
- 5 1988-01-29   0.87  1.86  4.05     183      14
- 6 1988-01-29   1.12  1.59  3.66     306      12
- 7 1988-01-29   0.99  1.58  3.75     364      31
- 8 1988-01-29   1.1   1.5   3.45     333      12
- 9 1988-01-29   1.03  1.74  3.96     268      14
-10 1988-01-29   0.84  1.94  4.07      NA      41
-# ℹ 402 more rows</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>Bisley03_filtered <span class="ot">&lt;-</span> Bisley03 <span class="sc">|&gt;</span> </span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Sample_Date, K, Mg, Ca, <span class="st">`</span><span class="at">NO3-N</span><span class="st">`</span>, <span class="st">`</span><span class="at">NH4-N</span><span class="st">`</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Sample_Date <span class="sc">&gt;=</span> <span class="st">"1988-01-01"</span> <span class="sc">&amp;</span> Sample_Date <span class="sc">&lt;=</span> <span class="st">"1994-12-31"</span>)</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>Bisley03_filtered</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 410 × 6
-   Sample_Date     K    Mg    Ca `NO3-N` `NH4-N`
-   &lt;date&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
- 1 1988-01-05   0.68  2.69  3.7      142      12
- 2 1988-01-12   0.66  2.55  3.6      181       9
- 3 1988-01-19   0.66  2.69  3.65     157      17
- 4 1988-01-26   0.72  3.04  4.17     157      31
- 5 1988-01-29   0.82  2.18  3.19     209      47
- 6 1988-01-29   0.72  2.18  3.11     183      41
- 7 1988-01-29   0.85  2.13  3.03     167      24
- 8 1988-01-29   0.82  2.09  2.93     141      34
- 9 1988-01-29  NA    NA    NA        209      72
-10 1988-01-29  NA    NA    NA         NA      75
-# ℹ 400 more rows</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>PuentoRoto_filtered <span class="ot">&lt;-</span> PuentoRoto <span class="sc">|&gt;</span> </span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Sample_Date, K, Mg, Ca, <span class="st">`</span><span class="at">NO3-N</span><span class="st">`</span>, <span class="st">`</span><span class="at">NH4-N</span><span class="st">`</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Sample_Date <span class="sc">&gt;=</span> <span class="st">"1988-01-01"</span> <span class="sc">&amp;</span> Sample_Date <span class="sc">&lt;=</span> <span class="st">"1994-12-31"</span>)</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>PuentoRoto_filtered</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 288 × 6
-   Sample_Date     K    Mg    Ca `NO3-N` `NH4-N`
-   &lt;date&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
- 1 1989-05-16   0.77  1.92  6.15      69      NA
- 2 1989-05-23   0.72  2.41  7.17      69      NA
- 3 1989-05-30   0.7   1.6   5.19      79      NA
- 4 1989-06-06   0.59  1.69  6.6       85      NA
- 5 1989-06-13   0.65  2.06  6.66      70      NA
- 6 1989-06-20   0.66  1.98  7.64      71      NA
- 7 1989-06-27   0.7   3.31  7.83      NA      NA
- 8 1989-07-05   0.62  0.82  3.17      10      NA
- 9 1989-07-11   0.76  1.85  7.94      24      NA
-10 1989-07-26   0.69  1.5   6.95      10      NA
-# ℹ 278 more rows</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>Combined_Bisley_Data <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(<span class="fu">list</span>(Bisley01_filtered, Bisley02_filtered, Bisley03_filtered, PuentoRoto_filtered))</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>Combined_Bisley_Data</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 1,526 × 6
-   Sample_Date     K    Mg    Ca `NO3-N` `NH4-N`
-   &lt;date&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
- 1 1988-01-05   0.76  2.66  4.06     132      19
- 2 1988-01-12   0.77  2.61  4.08     134      18
- 3 1988-01-19   0.75  2.67  4.16     125      21
- 4 1988-01-26   0.74  2.85  4.41     123      14
- 5 1988-01-29   0.86  1.48  2.4       77      21
- 6 1988-01-29   0.83  1.35  2.06      81      31
- 7 1988-01-29   0.91  1.64  2.65     281      27
- 8 1988-01-29   0.84  1.41  2.63     267      24
- 9 1988-01-29   0.86  1.59  2.67     242      21
-10 1988-02-02   0.76  1.71  2.78     138      80
-# ℹ 1,516 more rows</code></pre>
 </div>
 </div>
 </section>
-<section id="methods" class="level1">
-<h1>Methods</h1>
-<ul>
-<li>Creating a function to find the moving averages</li>
-</ul>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>moving_average <span class="ot">&lt;-</span> <span class="cf">function</span>(hurricane_df) {</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Initialize a tibble to contain the results</span></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  result <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">window_start =</span> <span class="fu">seq</span>(</span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">ymd</span>(<span class="st">"1988-01-05"</span>),</span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">ymd</span>(<span class="st">"1994-12-27"</span>),</span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">by =</span> <span class="st">"9 weeks"</span>),</span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">k_mgl =</span> <span class="cn">NA</span>,</span>
-<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">mg_mgl =</span> <span class="cn">NA</span>,</span>
-<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Fill in the rest of the ions</span></span>
-<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">ca_mgl =</span> <span class="cn">NA</span>,</span>
-<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">no3n_mgl =</span> <span class="cn">NA</span>,</span>
-<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">nh4n_mgl =</span> <span class="cn">NA</span></span>
-<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(result)) {</span>
-<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>    w1 <span class="ot">&lt;-</span> result<span class="sc">$</span>window_start[i] </span>
-<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>    w2 <span class="ot">&lt;-</span> w1 <span class="sc">+</span> <span class="fu">weeks</span>(<span class="dv">9</span>)</span>
-<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>    in_window <span class="ot">&lt;-</span> hurricane_df<span class="sc">$</span>Sample_Date <span class="sc">&gt;=</span> w1 <span class="sc">&amp;</span> hurricane_df<span class="sc">$</span>Sample_Date <span class="sc">&lt;</span> w2</span>
-<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Use indexing to pull out the ion concentrations that fall inside the window</span></span>
-<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>    k_window <span class="ot">&lt;-</span> hurricane_df<span class="sc">$</span>K[in_window]</span>
-<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>    mg_window <span class="ot">&lt;-</span> hurricane_df<span class="sc">$</span>Mg[in_window]</span>
-<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a>    ca_window <span class="ot">&lt;-</span> hurricane_df<span class="sc">$</span>Ca[in_window]</span>
-<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a>    no3n_window <span class="ot">&lt;-</span> hurricane_df<span class="sc">$</span><span class="st">`</span><span class="at">NO3-N</span><span class="st">`</span>[in_window]</span>
-<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a>    nh4n_window <span class="ot">&lt;-</span> hurricane_df<span class="sc">$</span><span class="st">`</span><span class="at">NH4-N</span><span class="st">`</span>[in_window]</span>
-<span id="cb25-28"><a href="#cb25-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-29"><a href="#cb25-29" aria-hidden="true" tabindex="-1"></a>    result<span class="sc">$</span>k_mgl[i] <span class="ot">&lt;-</span> <span class="fu">mean</span>(k_window, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb25-30"><a href="#cb25-30" aria-hidden="true" tabindex="-1"></a>    result<span class="sc">$</span>mg_mgl[i] <span class="ot">&lt;-</span> <span class="fu">mean</span>(mg_window, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb25-31"><a href="#cb25-31" aria-hidden="true" tabindex="-1"></a>    result<span class="sc">$</span>ca_mgl[i] <span class="ot">&lt;-</span> <span class="fu">mean</span>(ca_window, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb25-32"><a href="#cb25-32" aria-hidden="true" tabindex="-1"></a>    result<span class="sc">$</span>no3n_mgl[i] <span class="ot">&lt;-</span> <span class="fu">mean</span>(no3n_window, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb25-33"><a href="#cb25-33" aria-hidden="true" tabindex="-1"></a>    result<span class="sc">$</span>nh4n_mgl[i] <span class="ot">&lt;-</span> <span class="fu">mean</span>(nh4n_window, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) </span>
-<span id="cb25-34"><a href="#cb25-34" aria-hidden="true" tabindex="-1"></a>   }</span>
-<span id="cb25-35"><a href="#cb25-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(result)</span>
-<span id="cb25-36"><a href="#cb25-36" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb25-37"><a href="#cb25-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-38"><a href="#cb25-38" aria-hidden="true" tabindex="-1"></a><span class="co"># we can now use the following in our code to keep it clean and the function we created organized: source("../R/moving-average.R")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
+<section id="methods" class="level2">
+<h2 class="anchored" data-anchor-id="methods">Methods</h2>
+<p>For this project, a moving_average() function was created to calculate the mean concentration of each ion within 9-week windows. Each 9-week window should be sequential and not overlap with one another. This mutate function was added to “clean_data.R” to find the moving average for each site.</p>
+</section>
 <section id="using-pivot_longer-to-prepare-for-our-ggplot" class="level2">
 <h2 class="anchored" data-anchor-id="using-pivot_longer-to-prepare-for-our-ggplot">Using pivot_longer to prepare for our ggplot</h2>
+<p>The pivot_longer() function will be used to convert our data to a longer format, allowing for columns to be created for each ion, and a column to be created to display eaach concentration.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>Bisley_Avgs <span class="ot">&lt;-</span> Combined_Bisley_Data <span class="sc">|&gt;</span> </span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(K, Mg, Ca, <span class="st">`</span><span class="at">NO3-N</span><span class="st">`</span>, <span class="st">`</span><span class="at">NH4-N</span><span class="st">`</span>), </span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="at">names_to =</span> <span class="st">"Ions"</span>, </span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="at">values_to =</span> <span class="st">"Concentrations"</span></span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>fig3data_long <span class="ot">&lt;-</span> fig3_data <span class="sc">|&gt;</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(k_mgl, mg_mgl, ca_mgl, no3n_mgl, nh4n_mgl),</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">names_to =</span> <span class="st">"Ions"</span>, </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">values_to =</span> <span class="st">"Concentrations"</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-</section>
-<section id="results" class="level1">
-<h1>Results</h1>
-<section id="ggplot" class="level2">
-<h2 class="anchored" data-anchor-id="ggplot">ggplot</h2>
+<section id="results-and-figure-recreation" class="level2">
+<h2 class="anchored" data-anchor-id="results-and-figure-recreation">Results and figure recreation</h2>
+<p>The figure created shows the 9-week average ion concentrations at the four watershed sites between the years 1988 to 1994, similar to the original. Differerent y-axis scales are used because ions have different concentration ranges</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>Bisley_Avgs <span class="sc">|&gt;</span> </span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> Sample_Date, <span class="at">y =</span> Concentrations)) <span class="sc">+</span></span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>Ions, <span class="at">scales =</span> <span class="st">"free"</span>) <span class="sc">+</span></span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>fig3data_long <span class="sc">|&gt;</span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Years =</span> window_start) <span class="sc">|&gt;</span> </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> Years,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> Concentrations,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">colour =</span> site,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">group =</span> site,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">linetype =</span> site</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>)) <span class="sc">+</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>Ions, <span class="at">scales =</span> <span class="st">"free"</span>, <span class="at">ncol =</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 1340 rows containing missing values or values outside the scale range
+<pre><code>Warning: Removed 183 rows containing missing values or values outside the scale range
 (`geom_line()`).</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="paper_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="paper_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
