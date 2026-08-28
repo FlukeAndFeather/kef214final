@@ -1,4 +1,3 @@
-# The input to this function should be a data frame containing stream chemistry data
 moving_average <- function(hurricane_data) {
   # Initialize a tibble to contain the results
   result <- tibble(
@@ -14,14 +13,12 @@ moving_average <- function(hurricane_data) {
     nh4n_mgl = NA
   )
 
-  # Fill in the iterator and sequence
   for (i in 1:nrow(result)) {
     # Create variables for the start and end of the current window
     w1 <- result$window_start[i] 
     w2 <- w1 + weeks(9)
 
     # Create a logical vector, called "in_window", that says which samples are inside the window
-    # Hint: you'll compare sample dates to the start and end of the window
 
     in_window <- hurricane_data$Sample_Date >= w1 & hurricane_data$Sample_Date < w2
 
@@ -32,10 +29,7 @@ moving_average <- function(hurricane_data) {
     no3n_window <- hurricane_data$`NO3-N`[in_window]
     nh4n_window <- hurricane_data$`NH4-N`[in_window]
 
-
-    # The line above gets potassium in the window. Get the rest of the ions too
-
-    # Calculate the mean of each ion concentration and fill in the result
+    # Calculate the mean of each ion concentration
     result$k_mgl[i] <- mean(k_window, na.rm = TRUE)
     result$mg_mgl[i] <- mean(mg_window, na.rm = TRUE)
     result$ca_mgl[i] <- mean(ca_window, na.rm = TRUE)
