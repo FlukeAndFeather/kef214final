@@ -10,8 +10,8 @@ moving_average <- function(hurricane_data) {
     mg_mgl = NA,
         # Fill in the rest of the ions
     ca_mgl = NA,
-    no3n_mgl = NA,
-    nh4n_mgl = NA
+    no3_mgl = NA,
+    nh4_mgl = NA
   )
 
   # Fill in the iterator and sequence
@@ -29,8 +29,8 @@ moving_average <- function(hurricane_data) {
     k_window <- hurricane_data$K[in_window]
     mg_window <- hurricane_data$Mg[in_window]
     ca_window <- hurricane_data$Ca[in_window]
-    no3n_window <- hurricane_data$`NO3-N`[in_window]
-    nh4n_window <- hurricane_data$`NH4-N`[in_window]
+    no3_window <- hurricane_data$`NO3-N`[in_window]
+    nh4_window <- hurricane_data$`NH4-N`[in_window]
 
 
     # The line above gets potassium in the window. Get the rest of the ions too
@@ -39,8 +39,8 @@ moving_average <- function(hurricane_data) {
     result$k_mgl[i] <- mean(k_window, na.rm = TRUE)
     result$mg_mgl[i] <- mean(mg_window, na.rm = TRUE)
     result$ca_mgl[i] <- mean(ca_window, na.rm = TRUE)
-    result$no3n_mgl[i] <- mean(no3n_window, na.rm = TRUE)
-    result$nh4n_mgl[i] <- mean(nh4n_window, na.rm = TRUE) 
+    result$no3_mgl[i] <- mean(no3n_window, na.rm = TRUE)
+    result$nh4_mgl[i] <- mean(nh4n_window, na.rm = TRUE) 
    }
   
   # Return the result
