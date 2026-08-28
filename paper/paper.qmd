@@ -3,13 +3,20 @@
 ##  Kate Frankland 
 
 ## Background 
-- For the EDS 214 final project, we are going to be recreating figure 3 from the Schaefer et. al (2000) paper (https://doi.org/10.1017/s0266467400001358). This figure displays the change of concentrations for five different ions, being K (Potassium), Mg (Magnesium), Ca (Calcium), nitrate (NO3-N), and ammonium (NH4-N). Analyzing these ions can help understand the impact that hurricanes have on watersheds and nutrient cycling. 
+- For the EDS 214 final project, we are going to be recreating Figure 3 from the Schaefer et. al (2000) paper (https://doi.org/10.1017/s0266467400001358). This figure displays the change of concentrations for five different ions, being K (Potassium), Mg (Magnesium), Ca (Calcium), Nitrate (NO3-N), and Ammonium (NH4-N). Analyzing these ions can help understand the impact that hurricanes have on watersheds and nutrient cycling. 
 
-![](fig3_schaefer.png)
+![](fig3_schaefer.png) 
 
 
 ## Data 
-- To recreate this figure, the data for the four sites being analyzed needs to be imported and cleaned. This has been completed in clean_data.R, where the years were filtered to only include rows between 1988 and 1994. Columns with only including "Sample_Date", "K", "NO3-N", "Mg", "Ca", and "NH4-N" have also been created. In the cleaned data folder, the moving_average function ("R/moving-average.R") was also applied to each site, and each site has been respectively renamed to "BQ1", "BQ2", "BQ3", and "PR".
+- To recreate this figure, the data for these four sites: 
+
+1. QuebradaCuenca1-Bisley.csv 
+2. QuebradaCuenca2-Bisley.csv
+3. QuebradaCuenca3-Bisley.csv
+4. RioMameyesPuenteRoto.csv 
+
+needs to be imported and cleaned. This has been completed in clean_data.R, where the years were filtered to only include rows between 1988 and 1994. Columns to only include "Sample_Date", "K", "Mg", "Ca", "NO3-N", and "NH4-N" have also been created. 
 
 ``` {r}
 library(tidyverse)
@@ -17,11 +24,14 @@ fig3_data <- read_csv("../outputs/fig3_data.csv")
 ```
 
 ## Methods 
-For this project, a moving_average() function was created to calculate the mean concentration of each ion within 9-week windows. Each 9-week window should be sequential and not overlap with one another. This mutate function was added to "clean_data.R" to find the moving average for each site. 
+- For this project, a moving_average() function was created to calculate the mean concentration of each ion within 9-week windows. Each 9-week window should be sequential and not overlap with one another. 
+
+- To create the moving_average function, a tibble was created with the start date and end dates sequenced by every 9 weeks. An empty column for each ion was also created, which is to be populated by the site data. A vector was created to find the window of time sample data was collected that is greater than the start date, and less than the end date. Indexing was used to pull the ion concentration from this window of time, and then the mean of each ion within this window was found, and the result returned. 
+
+- This mutate function was added to "clean_data.R" to find the moving average for each site, and each site has been respectively renamed to "BQ1", "BQ2", "BQ3", and "PR".
 
 ## Using pivot_longer to prepare for our ggplot
-The pivot_longer() function will be used to convert our data to a longer format, allowing for columns to be created for each ion, and a column to be created to display eaach concentration. 
-
+- The pivot_longer() function will be used to convert our data to a longer format, allowing for columns to be created for each ion, and a column to be created to display eaach concentration. 
 
 ```{r}
 fig3data_long <- fig3_data |> 
@@ -31,10 +41,9 @@ fig3data_long <- fig3_data |>
 )
 ```
 
-## Results and figure recreation 
+## Results and Figure Recreation 
 
-The figure created shows the 9-week average ion concentrations at the four watershed sites between the years 1988 to 1994, similar to the original. Differerent y-axis scales are used because ions have different concentration ranges 
-
+- The figure created shows the 9-week average ion concentrations at the four watershed sites between the years 1988 to 1994, similar to the original. The y-axis scales for each ion varies depending on their concentration ranges. 
 
 ```{r}
 fig3data_long |> 
