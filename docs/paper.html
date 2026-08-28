@@ -96,15 +96,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="background" class="level2">
 <h2 class="anchored" data-anchor-id="background">Background</h2>
 <ul>
-<li>For the EDS 214 final project, we are going to be recreating figure 3 from the Schaefer et. al (2000) paper (https://doi.org/10.1017/s0266467400001358). This figure displays the change of concentrations for five different ions, being K (Potassium), Mg (Magnesium), Ca (Calcium), nitrate (NO3-N), and ammonium (NH4-N). Analyzing these ions can help understand the impact that hurricanes have on watersheds and nutrient cycling.</li>
+<li>For the EDS 214 final project, we are going to be recreating Figure 3 from the Schaefer et. al (2000) paper (https://doi.org/10.1017/s0266467400001358). This figure displays the change of concentrations for five different ions, being K (Potassium), Mg (Magnesium), Ca (Calcium), Nitrate (NO3-N), and Ammonium (NH4-N). Analyzing these ions can help understand the impact that hurricanes have on watersheds and nutrient cycling.</li>
 </ul>
 <p><img src="fig3_schaefer.png" class="img-fluid"></p>
 </section>
 <section id="data" class="level2">
 <h2 class="anchored" data-anchor-id="data">Data</h2>
 <ul>
-<li>To recreate this figure, the data for the four sites being analyzed needs to be imported and cleaned. This has been completed in clean_data.R, where the years were filtered to only include rows between 1988 and 1994. Columns with only including “Sample_Date”, “K”, “NO3-N”, “Mg”, “Ca”, and “NH4-N” have also been created. In the cleaned data folder, the moving_average function (“R/moving-average.R”) was also applied to each site, and each site has been respectively renamed to “BQ1”, “BQ2”, “BQ3”, and “PR”.</li>
+<li>To recreate this figure, the data for these four sites:</li>
 </ul>
+<ol type="1">
+<li>QuebradaCuenca1-Bisley.csv</li>
+<li>QuebradaCuenca2-Bisley.csv</li>
+<li>QuebradaCuenca3-Bisley.csv</li>
+<li>RioMameyesPuenteRoto.csv</li>
+</ol>
+<p>needs to be imported and cleaned. This has been completed in clean_data.R, where the years were filtered to only include rows between 1988 and 1994. Columns to only include “Sample_Date”, “K”, “Mg”, “Ca”, “NO3-N”, and “NH4-N” have also been created.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
@@ -135,11 +142,17 @@ date (1): window_start
 </section>
 <section id="methods" class="level2">
 <h2 class="anchored" data-anchor-id="methods">Methods</h2>
-<p>For this project, a moving_average() function was created to calculate the mean concentration of each ion within 9-week windows. Each 9-week window should be sequential and not overlap with one another. This mutate function was added to “clean_data.R” to find the moving average for each site.</p>
+<ul>
+<li><p>For this project, a moving_average() function was created to calculate the mean concentration of each ion within 9-week windows. Each 9-week window should be sequential and not overlap with one another.</p></li>
+<li><p>To create the moving_average function, a tibble was created with the start date and end dates sequenced by every 9 weeks. An empty column for each ion was also created, which is to be populated by the site data. A vector was created to find the window of time sample data was collected that is greater than the start date, and less than the end date. Indexing was used to pull the ion concentration from this window of time, and then the mean of each ion within this window was found, and the result returned.</p></li>
+<li><p>This mutate function was added to “clean_data.R” to find the moving average for each site, and each site has been respectively renamed to “BQ1”, “BQ2”, “BQ3”, and “PR”.</p></li>
+</ul>
 </section>
 <section id="using-pivot_longer-to-prepare-for-our-ggplot" class="level2">
 <h2 class="anchored" data-anchor-id="using-pivot_longer-to-prepare-for-our-ggplot">Using pivot_longer to prepare for our ggplot</h2>
-<p>The pivot_longer() function will be used to convert our data to a longer format, allowing for columns to be created for each ion, and a column to be created to display eaach concentration.</p>
+<ul>
+<li>The pivot_longer() function will be used to convert our data to a longer format, allowing for columns to be created for each ion, and a column to be created to display eaach concentration.</li>
+</ul>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>fig3data_long <span class="ot">&lt;-</span> fig3_data <span class="sc">|&gt;</span> </span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(k_mgl, mg_mgl, ca_mgl, no3n_mgl, nh4n_mgl),</span>
@@ -149,8 +162,10 @@ date (1): window_start
 </div>
 </section>
 <section id="results-and-figure-recreation" class="level2">
-<h2 class="anchored" data-anchor-id="results-and-figure-recreation">Results and figure recreation</h2>
-<p>The figure created shows the 9-week average ion concentrations at the four watershed sites between the years 1988 to 1994, similar to the original. Differerent y-axis scales are used because ions have different concentration ranges</p>
+<h2 class="anchored" data-anchor-id="results-and-figure-recreation">Results and Figure Recreation</h2>
+<ul>
+<li>The figure created shows the 9-week average ion concentrations at the four watershed sites between the years 1988 to 1994, similar to the original. The y-axis scales for each ion varies depending on their concentration ranges.</li>
+</ul>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>fig3data_long <span class="sc">|&gt;</span> </span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Years =</span> window_start) <span class="sc">|&gt;</span> </span>
