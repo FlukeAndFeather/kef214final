@@ -6,11 +6,11 @@ source("R/moving-average.R")
 
 # Read in data -----------------------------------------------------------
 
-Bisley01 <- read_csv("data/knb-lter-luq.20.4923064/QuebradaCuenca1-Bisley.csv")
-Bisley02 <- read_csv("data/knb-lter-luq.20.4923064/QuebradaCuenca2-Bisley.csv")
-Bisley03 <- read_csv("data/knb-lter-luq.20.4923064/QuebradaCuenca3-Bisley.csv")
-PuentoRoto <- read_csv("data/knb-lter-luq.20.4923064/RioMameyesPuenteRoto.csv")
-LTER <- read_csv("data/knb-lter-luq.20.4923064/LUQ LTER MDLs.csv")
+Bisley01 <- read_csv("data/knb-lter-data/QuebradaCuenca1-Bisley.csv")
+Bisley02 <- read_csv("data/knb-lter-data/QuebradaCuenca2-Bisley.csv")
+Bisley03 <- read_csv("data/knb-lter-data/QuebradaCuenca3-Bisley.csv")
+PuentoRoto <- read_csv("data/knb-lter-data/RioMameyesPuenteRoto.csv")
+LTER <- read_csv("data/knb-lter-data/LUQ LTER MDLs.csv")
 
 
 # Filtering and applying our function to the data ------------------------
@@ -49,10 +49,11 @@ PuentoRoto_filtered
 
 # Combine data using bind_rows ------------------------------------------------
 
-Combined_Bisley_Data <- bind_rows(list(Bisley01_filtered, Bisley02_filtered, Bisley03_filtered, PuentoRoto_filtered))
-Combined_Bisley_Data
+Combined_Data <- bind_rows(list(Bisley01_filtered, Bisley02_filtered, Bisley03_filtered, PuentoRoto_filtered))
+Combined_Data
 
 
 # Create a csv -----------------------------------------------------------
 
-write.csv(Combined_Bisley_Data, "fig3_data.csv", row.names = FALSE)
+write.csv(Combined_Data, "fig3_data.csv", row.names = FALSE)
+
