@@ -33,8 +33,8 @@ moving_average <- function(hurricane_data) {
     result$k_mgl[i] <- mean(k_window, na.rm = TRUE)
     result$mg_mgl[i] <- mean(mg_window, na.rm = TRUE)
     result$ca_mgl[i] <- mean(ca_window, na.rm = TRUE)
-    result$no3_mgl[i] <- mean(no3n_window, na.rm = TRUE)
-    result$nh4_mgl[i] <- mean(nh4n_window, na.rm = TRUE) 
+    result$no3_mgl[i] <- mean(no3_window, na.rm = TRUE)
+    result$nh4_mgl[i] <- mean(nh4_window, na.rm = TRUE) 
    }
   
   # Return the result
