@@ -1,7 +1,7 @@
 
 # Collaboration 
 
-- In my peer feedback, I was reveiwing ELyse's projject. I read through her code, tried to run it, and provided feeback where relevant. 
+- In my peer feedback, I was reveiwing Elyse's project. I read through her code, tried to run it, and provided feeback where relevant. 
 I tried to provide positive feedback when she met a requirement, and some feedback where I thought that clarity was needed or where some 
 improvements could be made. For alot of her specs at the time, she was halfway there, and needed some additional pointers on how to improve 
 her README, delete some files, etc. A figure wasn't able to be produced at the time as the code was unfinished, but she was on the right track.
